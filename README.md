@@ -13,12 +13,12 @@ $ go build Gzong
 
 ```sh
 # 启动服务
-$ go run Gzong/hello.go
+$ go run Gzong/example/hello.go
 ```
 
 ```sh
 # 测试服务
-$ curl localhost:8080/testhello
+$ curl localhost:8080/test
 ```
 
 

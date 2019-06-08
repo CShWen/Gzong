@@ -3,16 +3,15 @@ package main
 import (
 	"net/http"
 	"fmt"
-	"Gzong/serve"
+	"Gzong"
 )
 
 func main() {
-	gzong := serve.New()
+	gzong := Gzong.New()
 	gzong.GET("/testhello", helloFunc)
 	gzong.GET("/testcc", ccFunc)
 	gzong.POST("/testpost", testPostFunc)
 	gzong.Run(":8080")
-
 }
 
 func helloFunc(w http.ResponseWriter, req *http.Request) {
