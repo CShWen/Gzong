@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"fmt"
 	"Gzong"
+	"Gzong/middleware"
 )
 
 func main() {
@@ -11,6 +12,8 @@ func main() {
 	gzong.GET("/testhello", helloFunc)
 	gzong.GET("/testcc", ccFunc)
 	gzong.POST("/testpost", testPostFunc)
+	gzong.AddMiddleware(middleware.Logtest)
+	gzong.AddMiddleware(middleware.Logtest2)
 	gzong.Run(":8080")
 }
 

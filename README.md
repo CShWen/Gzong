@@ -28,7 +28,7 @@ $ curl localhost:8080/test
 1. 基础web服务，可启动可正常访问 ✔️
 2. 服务框架化 ✔️
 3. 路由支持 ✔️
-4. 中间件支持 
+4. 中间件支持 ✔️
 5. logging支持
 6. basicAuth支持
 7. session支持

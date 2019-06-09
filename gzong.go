@@ -32,7 +32,12 @@ func (r *Router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	if !ok {
 		http.NotFound(w, req)
 	} else {
-		f(w, req)
+		var finalHanderFunc = http.HandlerFunc(f)
+
+		for i, l := 0, len(r.mws); i < l; i++ {
+			finalHanderFunc = r.mws[i](http.HandlerFunc(finalHanderFunc))
+		}
+		finalHanderFunc(w, req)
 	}
 }
 
@@ -42,15 +47,6 @@ func (r *Router) Run(addr string) {
 		log.Fatal("error info: ", err)
 	}
 }
-
-/*func routeHandler(wr http.ResponseWriter, req *http.Request) {
-	f, ok := handlersMap[req.URL.Path][req.Method]
-	if !ok {
-		http.NotFound(wr, req)
-	} else {
-		f(wr, req)
-	}
-}*/
 
 func (r *Router) Add(route string, method string, hfc handlerFunc) {
 	if _, ok := r.handlersMap[route]; !ok {
@@ -65,4 +61,9 @@ func (r *Router) GET(route string, hfc handlerFunc) {
 
 func (r *Router) POST(route string, hfc handlerFunc) {
 	r.Add(route, "POST", hfc)
+}
+
+// 添加中间件
+func (r *Router) AddMiddleware(m Middleware) {
+	r.mws = append(r.mws, m)
 }
