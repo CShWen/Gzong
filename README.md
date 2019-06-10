@@ -29,8 +29,8 @@ $ curl localhost:8080/test
 2. 服务框架化 ✔️
 3. 路由支持 ✔️
 4. 中间件支持 ✔️
-5. logging支持
-6. basicAuth支持
+5. logging支持 ✔️
+6. basicAuth支持 
 7. session支持
 8. demo实现
 9. MongoDB环境(docker)
