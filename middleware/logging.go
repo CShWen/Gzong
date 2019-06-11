@@ -10,7 +10,6 @@ import (
 	"io/ioutil"
 )
 
-//func Logtest(h http.HandlerFunc) http.HandlerFunc {
 func Logtest(h http.HandlerFunc) http.HandlerFunc {
 	log.Println("testFuncLog.")
 	return func(w http.ResponseWriter, r *http.Request) {

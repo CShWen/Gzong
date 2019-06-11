@@ -8,8 +8,6 @@ import (
 type handlerFunc func(http.ResponseWriter, *http.Request)
 
 type Router struct {
-	handler http.Handler
-	// todo 中间件
 	mws         []Middleware
 	handlersMap map[string]map[string]handlerFunc
 }
