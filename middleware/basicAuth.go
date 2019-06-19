@@ -4,12 +4,12 @@ import (
 	"net/http"
 )
 
-type UserInfo struct {
+type BaseUser struct {
 	Name string
 	Pwd  string
 }
 
-func (u UserInfo) CheckUserIdentity(h http.HandlerFunc) http.HandlerFunc {
+func (u BaseUser) BasicAuth(h http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		baName, baPwd, ok := r.BasicAuth()
 		if ok == true && u.Name == baName && u.Pwd == baPwd {

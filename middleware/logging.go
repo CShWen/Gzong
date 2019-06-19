@@ -36,14 +36,14 @@ func RequestDetailsLog(h http.HandlerFunc) http.HandlerFunc {
 			log.Printf("%s: %s ;", k, v)
 		}
 		if r.Method == "POST" {
-			requestBody, ok := ioutil.ReadAll(r.Body)
-			if ok == nil {
+			requestBody, err := ioutil.ReadAll(r.Body)
+			if err == nil {
 				log.Printf("** request body: %s", requestBody)
 			}
 		}
 
 		newRw := httptest.NewRecorder()
-		h.ServeHTTP(newRw, r)
+		h.ServeHTTP(w, r)
 		for k, v := range newRw.Header() {
 			w.Header()[k] = v
 		}

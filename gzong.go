@@ -1,8 +1,8 @@
 package Gzong
 
 import (
-	"net/http"
 	"log"
+	"net/http"
 )
 
 type handlerFunc func(http.ResponseWriter, *http.Request)
@@ -12,11 +12,12 @@ type Router struct {
 	handlersMap map[string]map[string]handlerFunc
 }
 
-func New() *Router {
-	mainRouter := &Router{}
-	mainRouter.handlersMap = make(map[string]map[string]handlerFunc)
-	mainRouter.GET("/test", testApp)
-	return mainRouter
+func New() (r *Router) {
+	r = &Router{
+		handlersMap: make(map[string]map[string]handlerFunc),
+	}
+	r.GET("/test", testApp)
+	return r
 }
 
 func testApp(w http.ResponseWriter, r *http.Request) {
