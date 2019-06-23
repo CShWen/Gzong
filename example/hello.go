@@ -3,36 +3,36 @@ package main
 import (
 	"net/http"
 	"fmt"
-	"Gzong"
-	"Gzong/middleware"
+	"gzong"
+	"gzong/middleware"
 	"encoding/base64"
 )
 
 var globalSessMgr middleware.SessionManager
 
 func main() {
-	gzong := Gzong.New()
-	gzong.GET("/testhello", helloFunc)
-	gzong.GET("/testjson", jsonFunc)
-	gzong.POST("/testpost", testPostFunc)
+	gz := gzong.New()
+	gz.GET("/testhello", helloFunc)
+	gz.GET("/testjson", jsonFunc)
+	gz.POST("/testpost", testPostFunc)
 	//gzong.AddMiddleware(middleware.RequestDetailsLog)
 	//gzong.AddMiddleware(middleware.ServiceConSumeTimeLog)
 	// request headers记得添加 Authorization: [Basic c3M6cHdk]，否则请求401
 	name, pwd := "ss", "pwd"
 	fmt.Println("request headers记得添加 Authorization: ", "Basic "+basicAuth(name, pwd))
-	u := middleware.BaseUser{name, pwd}
-	gzong.AddMiddleware(u.BasicAuth)
+	u := middleware.BaseUser{Name: name, Pwd: pwd}
+	gz.AddMiddleware(u.BasicAuth)
 
 	globalSessMgr = middleware.NewSessionManager("gzCookie", 30)
-	gzong.GET("/login", businessAndSessionFunc)
-	gzong.GET("/testsm", businessAndSessionFunc)
-	gzong.GET("/logout", businessAndSessionFunc)
+	gz.GET("/login", businessAndSessionFunc)
+	gz.GET("/testsm", businessAndSessionFunc)
+	gz.GET("/logout", businessAndSessionFunc)
 
-	gzong.Run(":8080")
+	gz.Run(":8080")
 }
 
 func helloFunc(w http.ResponseWriter, req *http.Request) {
-	fmt.Fprintf(w, "hello Gzong.\n")
+	fmt.Fprintf(w, "hello gzong.\n")
 }
 
 func jsonFunc(w http.ResponseWriter, req *http.Request) {
