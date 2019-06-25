@@ -1,6 +1,5 @@
-package Gzong
+package gzong
 
 import "net/http"
 
-// http.Handler
 type Middleware func(http.HandlerFunc) http.HandlerFunc

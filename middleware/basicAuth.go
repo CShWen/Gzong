@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"encoding/base64"
 	"net/http"
 )
 
@@ -19,4 +20,10 @@ func (u BaseUser) BasicAuth(h http.HandlerFunc) http.HandlerFunc {
 			w.Write([]byte(`Unauthorized`))
 		}
 	}
+}
+
+// 将username和password进行base64加密编码
+func Base64Encode(username, password string) string {
+	auth := username + ":" + password
+	return base64.StdEncoding.EncodeToString([]byte(auth))
 }

@@ -1,8 +1,12 @@
-# gzong
+# gzong 
 
-gzong，一个以Go为基础的简单web框架
-
-
+[![Sourcegraph](https://sourcegraph.com/github.com/cshwen/gzong/-/badge.svg?style=flat-square)](https://sourcegraph.com/github.com/cshwen/gzong)
+[![GoDoc](http://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](http://godoc.org/github.com/cshwen/gzong)
+[![Go Report Card](https://goreportcard.com/badge/github.com/cshwen/gzong?style=flat-square)](https://goreportcard.com/report/github.com/cshwen/gzong)
+[![Build Status](http://img.shields.io/travis/cshwen/gzong.svg?style=flat-square)](https://travis-ci.org/cshwen/gzong)
+[![Codecov](https://img.shields.io/codecov/c/github/cshwen/gzong.svg?style=flat-square)](https://codecov.io/gh/cshwen/gzong)
+[![License](http://img.shields.io/badge/license-mit-blue.svg?style=flat-square)](https://raw.githubusercontent.com/cshwen/gzong/master/LICENSE)
+一个以Go为基础的简单web框架
 
 ## Examples
 
@@ -45,7 +49,7 @@ $ curl localhost:8080/test
 
 10. MongoDB CRUD实现(用户中心) ✔️
 
-11. 测试
+11. 测试 ⏯
 
 12. 文档
 

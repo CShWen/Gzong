@@ -1,7 +1,7 @@
 package uc
 
 import (
-	"gzong/mongo"
+	"gzong/demo/mongo"
 )
 
 type UserCenter struct {

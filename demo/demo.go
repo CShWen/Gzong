@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"go.mongodb.org/mongo-driver/bson"
 	"gzong"
-	"gzong/mongo"
+	"gzong/demo/mongo"
 	"net/http"
 	"time"
 )
@@ -55,7 +55,7 @@ func (uc UserCenter) ucLogoutFunc(w http.ResponseWriter, req *http.Request) {
 }
 
 //  md5加密内容
-func encryption(content string) string {
+func md5Encryption(content string) string {
 	if len(content) == 0 {
 		return ""
 	}
@@ -70,7 +70,7 @@ func (uc UserCenter) addUserFunc(w http.ResponseWriter, req *http.Request) {
 	req.ParseForm()
 	newUser := &BaseUser{
 		Nick:     req.PostForm.Get("nick"),
-		Password: encryption(req.PostForm.Get("password")),
+		Password: md5Encryption(req.PostForm.Get("password")),
 		Name:     req.PostForm.Get("name"),
 		Email:    req.PostForm.Get("email"),
 		Phone:    req.PostForm.Get("phone"),
@@ -136,7 +136,7 @@ func (uc UserCenter) updateUserFunc(w http.ResponseWriter, req *http.Request) {
 		Nick: req.PostForm.Get("nick"),
 	}
 	updateUser := &BaseUser{
-		Password: encryption(req.PostForm.Get("password")),
+		Password: md5Encryption(req.PostForm.Get("password")),
 		Name:     req.PostForm.Get("name"),
 		Email:    req.PostForm.Get("email"),
 		Phone:    req.PostForm.Get("phone"),

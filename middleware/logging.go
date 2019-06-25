@@ -1,61 +1,45 @@
 package middleware
 
 import (
+	"io/ioutil"
 	"log"
 	"net/http"
-	"fmt"
-	"time"
 	"net/http/httptest"
 	"runtime"
-	"io/ioutil"
+	"time"
 )
 
-func Logtest(h http.HandlerFunc) http.HandlerFunc {
-	log.Println("testFuncLog.")
-	return func(w http.ResponseWriter, r *http.Request) {
-		fmt.Println("testFuncLog_1")
-		h.ServeHTTP(w, r)
-		fmt.Println("testFuncLog_2")
-	}
-}
-
-func Logtest2(h http.HandlerFunc) http.HandlerFunc {
-	log.Println("测试日志.")
-	return func(w http.ResponseWriter, r *http.Request) {
-		fmt.Println("测试日志Func_1")
-		h.ServeHTTP(w, r)
-		fmt.Println("测试日志Func_2")
-	}
-}
-
+// 打印请求与返回详细日志
 func RequestDetailsLog(h http.HandlerFunc) http.HandlerFunc {
+
 	return func(w http.ResponseWriter, r *http.Request) {
 		log.Printf("** request info | %s | %s | %s | %s", r.Method, r.RequestURI, r.Proto, r.RemoteAddr)
 		log.Println("** request header:")
 		for k, v := range r.Header {
 			log.Printf("%s: %s ;", k, v)
 		}
-		if r.Method == "POST" {
+		if r.Method == "POST" || r.Method == "PUT" {
 			requestBody, err := ioutil.ReadAll(r.Body)
 			if err == nil {
 				log.Printf("** request body: %s", requestBody)
 			}
 		}
 
-		newRw := httptest.NewRecorder()
-		h.ServeHTTP(w, r)
-		for k, v := range newRw.Header() {
+		rw := httptest.NewRecorder()
+		h.ServeHTTP(rw, r)
+
+		log.Printf("** response info | %d | %s | %s ", rw.Result().StatusCode, rw.Result().Proto, rw.Result().Header)
+		log.Println("** response body:", rw.Body)
+
+		w.WriteHeader(rw.Result().StatusCode)
+		for k, v := range rw.Header() {
 			w.Header()[k] = v
 		}
-		//w.Header()["testHeader"] = []string{"t1", "t2"}
-		//w.WriteHeader(newRw.Code)
-		//w.Write(newRw.Body.Bytes())
-
-		log.Printf("** response info | %d | %s | %s ", newRw.Result().StatusCode, newRw.Result().Proto, newRw.Result().Header)
-		log.Println("** response body:", newRw.Body)
+		w.Write(rw.Body.Bytes())
 	}
 }
 
+// 打印服务耗时
 func ServiceConSumeTimeLog(h http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		t1 := time.Now().UnixNano()

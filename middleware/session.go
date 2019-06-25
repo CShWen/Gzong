@@ -1,15 +1,15 @@
 package middleware
 
 import (
-	"sync"
-	"time"
-	"net/http"
-	"net/url"
+	"crypto/rand"
+	"encoding/base64"
 	"errors"
 	"io"
+	"net/http"
+	"net/url"
 	"strconv"
-	"encoding/base64"
-	"crypto/rand"
+	"sync"
+	"time"
 )
 
 type SessionManager struct {
@@ -25,18 +25,19 @@ type Session struct {
 	values    map[interface{}]interface{}
 }
 
-func NewSessionManager(cookieName string, maxLifeTime int64) SessionManager {
+func NewSessionManager(cookieName string, maxLifeTime int64) *SessionManager {
 	manager := &SessionManager{
 		cookieName:  cookieName,
 		maxLifeTime: maxLifeTime,
 		sessionMap:  make(map[string]Session),
 	}
 	go manager.SessionGC()
-	return *manager
+	return manager
 }
 
 func (manager *SessionManager) NewSessionId() string {
 	bytes := make([]byte, 32)
+
 	if _, err := io.ReadFull(rand.Reader, bytes); err != nil {
 		nano := time.Now().UnixNano()
 		return strconv.FormatInt(nano, 10)
@@ -104,6 +105,7 @@ func (manager *SessionManager) GetSessionValue(sessionId string, key interface{}
 
 func (manager *SessionManager) CheckCookieValid(w http.ResponseWriter, r *http.Request) (string, error) {
 	cookie, err := r.Cookie(manager.cookieName)
+
 	if err != nil || cookie == nil {
 		return "", err
 	}

@@ -1,4 +1,4 @@
-package Gzong
+package gzong
 
 import (
 	"log"
@@ -60,6 +60,10 @@ func (r *Router) GET(route string, hfc handlerFunc) {
 
 func (r *Router) POST(route string, hfc handlerFunc) {
 	r.Add(route, "POST", hfc)
+}
+
+func (r *Router) PUT(route string, hfc handlerFunc) {
+	r.Add(route, "PUT", hfc)
 }
 
 // 添加中间件
