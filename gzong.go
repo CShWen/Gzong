@@ -1,6 +1,8 @@
 package gzong
 
 import (
+	"context"
+	"fmt"
 	"log"
 	"net/http"
 )
@@ -8,6 +10,7 @@ import (
 type handlerFunc func(http.ResponseWriter, *http.Request)
 
 type Router struct {
+	srv         *http.Server
 	mws         []Middleware
 	handlersMap map[string]map[string]handlerFunc
 }
@@ -16,14 +19,7 @@ func New() (r *Router) {
 	r = &Router{
 		handlersMap: make(map[string]map[string]handlerFunc),
 	}
-	r.GET("/test", testApp)
 	return r
-}
-
-func testApp(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	w.Write([]byte(`{"test": "ok"}`))
 }
 
 func (r *Router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
@@ -41,10 +37,14 @@ func (r *Router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 }
 
 func (r *Router) Run(addr string) {
-	err := http.ListenAndServe(addr, r)
-	if err != nil {
-		log.Fatal("error info: ", err)
-	}
+	//err := http.ListenAndServe(addr, r)
+	go func() {
+		r.srv = &http.Server{Addr: addr, Handler: r}
+		err := r.srv.ListenAndServe()
+		if err != nil {
+			log.Fatal("error info: ", err)
+		}
+	}()
 }
 
 func (r *Router) Add(route string, method string, hfc handlerFunc) {
@@ -69,4 +69,13 @@ func (r *Router) PUT(route string, hfc handlerFunc) {
 // 添加中间件
 func (r *Router) AddMiddleware(m Middleware) {
 	r.mws = append(r.mws, m)
+}
+
+// 关闭服务器
+func (r *Router) Close() {
+	if err := r.srv.Shutdown(context.Background()); err != nil {
+		fmt.Println("close有错？")
+		panic(err)
+	}
+	log.Println("Server shutdown.")
 }

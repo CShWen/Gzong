@@ -49,7 +49,7 @@ $ curl localhost:8080/test
 
 10. MongoDB CRUD实现(用户中心) ✔️
 
-11. 测试 ⏯
+11. 测试 ✔️
 
 12. 文档
 
