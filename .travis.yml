@@ -11,4 +11,7 @@ install:
   - go get -v golang.org/x/lint/golint
 
 script:
-  - go build && go test
+  - pwd
+  - ls -al
+  - go build
+  - go test
