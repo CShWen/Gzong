@@ -1,14 +1,14 @@
 package uc
 
 import (
+	"context"
+	"crypto/md5"
+	"encoding/json"
+	"fmt"
+	"go.mongodb.org/mongo-driver/bson"
 	"gzong/demo/mongo"
 	"net/http"
-	"context"
 	"time"
-	"fmt"
-	"crypto/md5"
-	"go.mongodb.org/mongo-driver/bson"
-	"encoding/json"
 )
 
 // UserCenter 用户中心的配置和MongoDB核心

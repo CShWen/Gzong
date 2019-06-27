@@ -1,12 +1,12 @@
 package main
 
 import (
-	"net/http"
 	"fmt"
 	"gzong"
 	"gzong/middleware"
-	"log"
 	"io"
+	"log"
+	"net/http"
 )
 
 var globalSessMgr *middleware.SessionManager
