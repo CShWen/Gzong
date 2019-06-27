@@ -4,8 +4,9 @@ go:
   - "1.12.6"
 
 install:
-  - go get -t -v ./...
+  - go get github.com/mongodb/mongo-go-driver/mongo
   - go get -v golang.org/x/lint/golint
+  - go get -t -v ./...
 
 script:
   - go test -v -coverprofile=coverage.txt -covermode=set ./...
