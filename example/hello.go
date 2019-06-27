@@ -32,18 +32,18 @@ func main() {
 	gz.Run(":8080")
 }
 
-func helloFunc(w http.ResponseWriter, req *http.Request) {
-	fmt.Fprintf(w, "hello gzong.\n")
+func helloFunc(w http.ResponseWriter, _ *http.Request) {
+	fmt.Fprintln(w, "hello gzong.")
 }
 
-func jsonFunc(w http.ResponseWriter, req *http.Request) {
+func jsonFunc(w http.ResponseWriter, _ *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Header().Set("Content-Type", "application/json")
 	w.Write([]byte(`{"alive": true, "cc": "ss"}`))
 }
 
-func testPostFunc(w http.ResponseWriter, req *http.Request) {
-	fmt.Fprintf(w, "test post.\n")
+func testPostFunc(w http.ResponseWriter, _ *http.Request) {
+	fmt.Fprintln(w, "test post.")
 }
 
 func businessAndSessionFunc(w http.ResponseWriter, r *http.Request) {
@@ -55,27 +55,27 @@ func businessAndSessionFunc(w http.ResponseWriter, r *http.Request) {
 	io.WriteString(w, `session验证通过，继续后续业务`)
 }
 
-func sessionFilter(w http.ResponseWriter, r *http.Request) bool {
-	sessionId, err := globalSessMgr.CheckCookieValid(w, r)
+func sessionFilter(w http.ResponseWriter, r *http.Request) (result bool) {
+	result = false
+	sessionID, err := globalSessMgr.CheckCookieValid(w, r)
 	if err != nil {
 		if r.URL.Path == "/login" {
-			sessionId := globalSessMgr.NewSession(w, r, make(map[interface{}]interface{}))
-			fmt.Println("new SessionId:\t", sessionId)
+			sessionID := globalSessMgr.NewSession(w, r, make(map[interface{}]interface{}))
+			fmt.Println("new SessionID:\t", sessionID)
 			w.WriteHeader(http.StatusOK)
 			w.Write([]byte("login success."))
 		} else {
 			w.WriteHeader(http.StatusUnauthorized)
 			w.Write([]byte(err.Error()))
 		}
-		return false
 	} else {
 		if r.URL.Path == "/logout" {
-			globalSessMgr.EndSessionById(sessionId)
+			globalSessMgr.EndSessionByID(sessionID)
 			w.WriteHeader(http.StatusOK)
 			w.Write([]byte("logout success."))
-			return false
 		} else {
-			return true
+			result = true
 		}
 	}
+	return
 }

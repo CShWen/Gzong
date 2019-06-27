@@ -9,11 +9,11 @@ import (
 	"testing"
 )
 
-const CONTENT_TYPE = "Content-Type"
-const CONTENT_TYPE_TEXT_HTML = "text/html;charset=UTF-8"
-const CONTENT_TYPE_APPLICATION_JSON = "application/json"
-const SUCCESS = "success"
-const BODY_POST = `{"test": "ss"}`
+const contentType = "Content-Type"
+const contentTypeTextHTML = "text/html;charset=UTF-8"
+const contentTypeApplicationJSON = "application/json"
+const success = "success"
+const postBody = `{"test": "ss"}`
 
 func TestNew(t *testing.T) {
 	gz := New()
@@ -24,15 +24,15 @@ func TestNew(t *testing.T) {
 
 func testPost(w http.ResponseWriter, r *http.Request) {
 	bodyBytes, _ := ioutil.ReadAll(r.Body)
-	w.Header().Set(CONTENT_TYPE, CONTENT_TYPE_APPLICATION_JSON)
+	w.Header().Set(contentType, contentTypeApplicationJSON)
 	w.WriteHeader(http.StatusOK)
 	w.Write(bodyBytes)
 }
 
 func testGet(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set(CONTENT_TYPE, CONTENT_TYPE_TEXT_HTML)
+	w.Header().Set(contentType, contentTypeTextHTML)
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte(SUCCESS))
+	w.Write([]byte(success))
 }
 
 func TestRouter_Add(t *testing.T) {
@@ -101,11 +101,11 @@ func TestRouter_GET(t *testing.T) {
 	if resp.StatusCode != http.StatusOK {
 		t.Error("GET请求存在的地址，响应返回的状态码不符合预期")
 	}
-	if resp.Header.Get(CONTENT_TYPE) != CONTENT_TYPE_TEXT_HTML {
+	if resp.Header.Get(contentType) != contentTypeTextHTML {
 		t.Error("GET请求存在的地址，响应返回的header不符合预期")
 	}
 	bodyBytes, _ := ioutil.ReadAll(resp.Body)
-	if string(bodyBytes) != SUCCESS {
+	if string(bodyBytes) != success {
 		t.Error("GET请求存在的地址，响应返回的body不符合预期")
 	}
 }
@@ -118,16 +118,16 @@ func TestRouter_POST(t *testing.T) {
 	}))
 	defer ts.Close()
 
-	resp, _ := http.Post(ts.URL+"/test", CONTENT_TYPE_APPLICATION_JSON, strings.NewReader(BODY_POST))
+	resp, _ := http.Post(ts.URL+"/test", contentTypeApplicationJSON, strings.NewReader(postBody))
 	bodyBytes, _ := ioutil.ReadAll(resp.Body)
 
 	if resp.StatusCode != http.StatusOK {
 		t.Error("POST请求存在的地址，响应返回的状态码不符合预期")
 	}
-	if resp.Header.Get(CONTENT_TYPE) != CONTENT_TYPE_APPLICATION_JSON {
+	if resp.Header.Get(contentType) != contentTypeApplicationJSON {
 		t.Error("POST请求存在的地址，响应返回的header不符合预期")
 	}
-	if string(bodyBytes) != BODY_POST {
+	if string(bodyBytes) != postBody {
 		t.Error("POST请求存在的地址，响应返回的body不符合预期")
 	}
 }
@@ -140,17 +140,17 @@ func TestRouter_PUT(t *testing.T) {
 	}))
 	defer ts.Close()
 
-	req, _ := http.NewRequest("PUT", ts.URL+"/test", strings.NewReader(BODY_POST))
+	req, _ := http.NewRequest("PUT", ts.URL+"/test", strings.NewReader(postBody))
 	resp, _ := http.DefaultClient.Do(req)
 	bodyBytes, _ := ioutil.ReadAll(resp.Body)
 
 	if resp.StatusCode != http.StatusOK {
 		t.Error("PUT请求存在的地址，响应返回的状态码不符合预期")
 	}
-	if resp.Header.Get(CONTENT_TYPE) != CONTENT_TYPE_APPLICATION_JSON {
+	if resp.Header.Get(contentType) != contentTypeApplicationJSON {
 		t.Error("PUT请求存在的地址，响应返回的header不符合预期")
 	}
-	if string(bodyBytes) != BODY_POST {
+	if string(bodyBytes) != postBody {
 		t.Error("PUT请求存在的地址，响应返回的body不符合预期")
 	}
 }
@@ -165,7 +165,7 @@ func TestRouter_ServeHTTP(t *testing.T) {
 
 	resp, _ := http.Get(ts.URL + "/test")
 	bodyBytes, _ := ioutil.ReadAll(resp.Body)
-	if resp.StatusCode != http.StatusOK || string(bodyBytes) != SUCCESS {
+	if resp.StatusCode != http.StatusOK || string(bodyBytes) != success {
 		t.Error("GET请求存在的地址访问异常")
 	}
 

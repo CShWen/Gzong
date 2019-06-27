@@ -27,7 +27,7 @@ func TestBaseUser_BasicAuth(t *testing.T) {
 	}
 	basicAuthFunc.ServeHTTP(w, req)
 
-	bodyBytes, err := ioutil.ReadAll(w.Body)
+	bodyBytes, _ := ioutil.ReadAll(w.Body)
 	if w.Code != http.StatusUnauthorized || string(bodyBytes) != "Unauthorized" {
 		t.Error("basicAuth认证失败，请求header未包含认证信息却未能阻断请求")
 	}
@@ -35,7 +35,7 @@ func TestBaseUser_BasicAuth(t *testing.T) {
 	req.Header.Add("Authorization", "Basic "+base64code)
 	basicAuthFunc.ServeHTTP(w, req)
 
-	bodyBytes, err = ioutil.ReadAll(w.Body)
+	bodyBytes, _ = ioutil.ReadAll(w.Body)
 	if string(bodyBytes) != "success" {
 		t.Error("basicAuth认证失败，理应认证通过却没有，应顺利走到业务后续逻辑")
 	}

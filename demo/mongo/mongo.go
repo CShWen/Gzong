@@ -9,14 +9,17 @@ import (
 	"time"
 )
 
+// GzMongo MongoDB关键部件
 type GzMongo struct {
 	client     *mongo.Client
 	collection *mongo.Collection
 	err        error
 }
 
+// ConnectDB 连接到指定MongoDB服务
 func (mc *GzMongo) ConnectDB(uri string) {
-	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
 	mc.client, mc.err = mongo.NewClient(options.Client().ApplyURI(uri))
 	if mc.err != nil {
 		log.Fatal(mc.err)
@@ -33,6 +36,7 @@ func (mc *GzMongo) ConnectDB(uri string) {
 	fmt.Println("Connected to DB.")
 }
 
+// GetCollection 连接后返回指定库表的表对象
 func (mc *GzMongo) GetCollection(dbName, collectionName string) *mongo.Collection {
 	if mc.collection == nil {
 		mc.collection = mc.client.Database(dbName).Collection(collectionName)

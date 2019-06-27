@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-// 打印请求与返回详细日志
+// RequestDetailsLog 打印请求与返回详细日志
 func RequestDetailsLog(h http.HandlerFunc) http.HandlerFunc {
 
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -39,7 +39,7 @@ func RequestDetailsLog(h http.HandlerFunc) http.HandlerFunc {
 	}
 }
 
-// 打印服务耗时
+// ServiceConSumeTimeLog 打印服务耗时
 func ServiceConSumeTimeLog(h http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		t1 := time.Now().UnixNano()

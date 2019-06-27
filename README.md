@@ -1,12 +1,15 @@
 # gzong 
 
-[![Sourcegraph](https://sourcegraph.com/github.com/cshwen/gzong/-/badge.svg?style=flat-square)](https://sourcegraph.com/github.com/cshwen/gzong)
-[![GoDoc](http://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](http://godoc.org/github.com/cshwen/gzong)
-[![Go Report Card](https://goreportcard.com/badge/github.com/cshwen/gzong?style=flat-square)](https://goreportcard.com/report/github.com/cshwen/gzong)
-[![Build Status](http://img.shields.io/travis/cshwen/gzong.svg?style=flat-square)](https://travis-ci.org/cshwen/gzong)
-[![Codecov](https://img.shields.io/codecov/c/github/cshwen/gzong.svg?style=flat-square)](https://codecov.io/gh/cshwen/gzong)
-[![License](http://img.shields.io/badge/license-mit-blue.svg?style=flat-square)](https://raw.githubusercontent.com/cshwen/gzong/master/LICENSE)
-一个以Go为基础的简单web框架
+[![Sourcegraph](https://sourcegraph.com/github.com/cshwen/gzong/-/badge.svg)](https://sourcegraph.com/github.com/cshwen/gzong)
+[![GoDoc](https://godoc.org/github.com/cshwen/gzong?status.svg)](https://godoc.org/github.com/cshwen/gzong)
+[![Go Report Card](https://goreportcard.com/badge/github.com/cshwen/gzong)](https://goreportcard.com/report/github.com/cshwen/gzong)
+[![Build Status](http://img.shields.io/travis/cshwen/gzong.svg)](https://travis-ci.org/cshwen/gzong)
+[![Codecov](https://img.shields.io/codecov/c/github/cshwen/gzong.svg)](https://codecov.io/gh/cshwen/gzong)
+[![License](http://img.shields.io/badge/license-mit-blue.svg)](https://raw.githubusercontent.com/cshwen/gzong/master/LICENSE)
+
+一个以Go为基础的简单web框架，简单实现了支持增删查改的用户中心demo（MongoDB）。
+
+
 
 ## Examples
 
@@ -23,6 +26,29 @@ $ go run gzong/example/hello.go
 ```sh
 # 测试服务
 $ curl localhost:8080/test
+```
+
+
+
+## 用户中心demo
+
+简单实现了支持增删查改的用户中心demo，数据库实例为docker上的MongoDB镜像。
+
+```sh
+# 运行环境 docker+MongoDB镜像
+docker run -p 27017:27017 -v /tmp/db:/data/db -d mongo
+# 启动服务
+$ go build gzong
+$ go run gzong/demo/demo.go
+# 创建新用户
+$ curl localhost:8080/addUser -X POST -d 'nick=tnick&password=tpwd&name=tname&email=tt@gmail.com&phone=13712345678'
+# 修改用户信息
+$ curl localhost:8080/updateUser -X POST -d 'nick=tnick&password=tpwd&name=tname&email=tt@gmail.com&phone=13712345678'
+# 查询用户
+$ curl localhost:8080/queryUser -X POST -d 'nick=tnick&name=tname'
+# 删除用户
+$ curl localhost:8080/delUser -X POST -d 'nick=tnick&name=tname'
+
 ```
 
 
@@ -51,30 +77,6 @@ $ curl localhost:8080/test
 
 11. 测试 ✔️
 
-12. 文档
+12. 文档 ✔️
 
-13. 汇总
-
-    
-
-##### 建议/待优化点 
-
-1. router的/test改为单元测试
-  https://github.com/cshwen/gzong/blob/master/gzong.go#L18
-  https://github.com/cshwen/gzong/blob/master/gzong.go#L22
-  例如：
-  https://github.com/labstack/echo/blob/master/bind_test.go
-
-2. 尽量避免 relative import
-  https://github.com/cshwen/gzong/blob/master/example/hello.go#L6
-
-3. 代码格式化 go fmt 
-
-4. 文档， report card， ci, 测试覆盖率
-https://goreportcard.com/report/github.com/cshwen/gzong
-参考：
-https://github.com/labstack/echo#guide
-
-5. 补充文档 https://godoc.org/github.com/cshwen/gzong
-
-6. GitHub改名cshwen，项目改名gzong
+13. 汇总 ✔️
