@@ -1,8 +1,8 @@
 package main
 
 import (
-	"gzong"
-	"gzong/demo/uc"
+	"github.com/cshwen/gzong"
+	"github.com/cshwen/gzong/demo/uc"
 )
 
 func main() {

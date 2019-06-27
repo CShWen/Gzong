@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"gzong"
-	"gzong/middleware"
+	"github.com/cshwen/gzong/middleware"
 	"io"
 	"log"
 	"net/http"

@@ -1,7 +1,7 @@
 package gzong
 
 import (
-	"gzong/middleware"
+	"github.com/cshwen/gzong/middleware"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
