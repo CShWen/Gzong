@@ -4,7 +4,7 @@ go:
   - "1.12.6"
 
 install:
-  - go get -v github.com/mongodb/mongo-go-driver
+  - go get -v go.mongodb.org/mongo-driver/mongo
   - go get -v golang.org/x/lint/golint
   - go get -t -v ./...
 
