@@ -5,8 +5,8 @@ go:
 
 install:
   - go get -v go.mongodb.org/mongo-driver/mongo
+  - go get -v github.com/cshwen/gzong
   - go get -v golang.org/x/lint/golint
-  - go get -t -v ./...
 
 script:
   - go test -v -coverprofile=coverage.txt -covermode=set ./...
