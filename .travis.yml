@@ -9,7 +9,6 @@ install:
   - go get -v go.mongodb.org/mongo-driver/mongo
   - go get -v github.com/cshwen/gzong
   - go get -v golang.org/x/lint/golint
-  - go get -t -v ${gobuild_args} ./...
 
 script:
   - go build && go test
