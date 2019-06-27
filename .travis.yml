@@ -11,5 +11,5 @@ install:
   - go get -v golang.org/x/lint/golint
 
 script:
-  - go build
+  - go build ./gzong
   - go test -v -coverprofile=coverage.txt -covermode=set ./...
