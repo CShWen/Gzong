@@ -1,15 +1,10 @@
 language: go
 
 go:
-  - "1.x"
-  - "1.12"
-  - "1.12.x"
-  - master
-
-before_install:
-  - go get -t -v ./...
+  - "1.12.6"
 
 install:
+  - go get -t -v ./...
   - go get -v golang.org/x/lint/golint
 
 script:
