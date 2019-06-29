@@ -161,9 +161,11 @@ func TestRouter_ServeHTTP(t *testing.T) {
 func TestRouter_Run(t *testing.T) {
 	gz := New()
 	gz.GET("/test", testGet)
+
 	go func() {
 		gz.Run(":9872")
-		time.Sleep(2 * time.Second)
+		time.Sleep(1 * time.Second)
+		defer gz.Close()
 	}()
 
 	resp, _ := http.Get("http://127.0.0.1:9872/test")
@@ -181,7 +183,8 @@ func TestRouter_GET(t *testing.T) {
 	gz.GET("/test", testGet)
 	go func() {
 		gz.Run(":9871")
-		time.Sleep(2 * time.Second)
+		time.Sleep(1 * time.Second)
+		defer gz.Close()
 	}()
 
 	resp, _ := http.Get("http://127.0.0.1:9871/test")
