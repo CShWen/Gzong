@@ -158,7 +158,27 @@ func TestRouter_ServeHTTP(t *testing.T) {
 	}
 }
 
-func TestRouter_RunAndGET(t *testing.T) {
+func TestRouter_Run(t *testing.T) {
+	gz := New()
+	gz.GET("/test", testGet)
+
+	go func() {
+		gz.Run(":9872")
+		time.Sleep(1 * time.Second)
+		defer gz.Close()
+	}()
+
+	resp, _ := http.Get("http://127.0.0.1:9872/test")
+	if resp.StatusCode != http.StatusOK {
+		t.Error("GET请求存在的地址访问异常")
+	}
+	resp, _ = http.Get("http://127.0.0.1:9872/error")
+	if resp.StatusCode != http.StatusNotFound {
+		t.Error("GET请求不存在的地址应404")
+	}
+}
+
+/*func TestRouter_GET(t *testing.T) {
 	gz := New()
 	gz.GET("/test", testGet)
 	go func() {
@@ -178,8 +198,8 @@ func TestRouter_RunAndGET(t *testing.T) {
 	if string(bodyBytes) != success {
 		t.Error("GET请求存在的地址，响应返回的body不符合预期")
 	}
-	resp, _ = http.Get("http://127.0.0.1:9871/error")
+	resp, _ = http.Get("http://127.0.0.1:9872/error")
 	if resp.StatusCode != http.StatusNotFound {
 		t.Error("GET请求不存在的地址应404")
 	}
-}
+}*/
