@@ -3,16 +3,12 @@ language: go
 go:
   - "1.12.6"
 
-env:
-  - GO111MODULE=on
-
-go_import_path: github.com/cshwen/gzong
-
 install:
   - go get -v go.mongodb.org/mongo-driver/mongo
-  - go get -v github.com/cshwen/gzong
   - go get -v golang.org/x/lint/golint
 
 script:
+  - ls
+  - pwd
   - go build
   - go test gzong_test.go
