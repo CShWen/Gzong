@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/cshwen/gzong"
-	"github.com/cshwen/gzong/demo/uc"
+	"github.com/cshwen/gzong/example/demo/uc"
 )
 
 func main() {

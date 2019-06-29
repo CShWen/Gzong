@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"go.mongodb.org/mongo-driver/bson"
-	"github.com/cshwen/gzong/demo/mongo"
+	"github.com/cshwen/gzong/example/demo/mongo"
 	"net/http"
 	"time"
 )
