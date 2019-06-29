@@ -93,27 +93,6 @@ func TestRouter_AddMiddleware(t *testing.T) {
 	}
 }
 
-func TestRouter_GET(t *testing.T) {
-	gz := New()
-	gz.GET("/test", testGet)
-	go func() {
-		gz.Run(":9871")
-		time.Sleep(time.Second)
-	}()
-
-	resp, _ := http.Get("http://127.0.0.1:9871/test")
-	if resp.StatusCode != http.StatusOK {
-		t.Error("GET请求存在的地址，响应返回的状态码不符合预期")
-	}
-	if resp.Header.Get(contentType) != contentTypeTextHTML {
-		t.Error("GET请求存在的地址，响应返回的header不符合预期")
-	}
-	bodyBytes, _ := ioutil.ReadAll(resp.Body)
-	if string(bodyBytes) != success {
-		t.Error("GET请求存在的地址，响应返回的body不符合预期")
-	}
-}
-
 func TestRouter_POST(t *testing.T) {
 	gz := New()
 	gz.POST("/test", testPost)
@@ -194,5 +173,26 @@ func TestRouter_Run(t *testing.T) {
 	resp, _ = http.Get("http://127.0.0.1:9872/error")
 	if resp.StatusCode != http.StatusNotFound {
 		t.Error("GET请求不存在的地址应404")
+	}
+}
+
+func TestRouter_GET(t *testing.T) {
+	gz := New()
+	gz.GET("/test", testGet)
+	go func() {
+		gz.Run(":9871")
+		time.Sleep(time.Second)
+	}()
+
+	resp, _ := http.Get("http://127.0.0.1:9871/test")
+	if resp.StatusCode != http.StatusOK {
+		t.Error("GET请求存在的地址，响应返回的状态码不符合预期")
+	}
+	if resp.Header.Get(contentType) != contentTypeTextHTML {
+		t.Error("GET请求存在的地址，响应返回的header不符合预期")
+	}
+	bodyBytes, _ := ioutil.ReadAll(resp.Body)
+	if string(bodyBytes) != success {
+		t.Error("GET请求存在的地址，响应返回的body不符合预期")
 	}
 }
