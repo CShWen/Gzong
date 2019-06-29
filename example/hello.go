@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"gzong"
+	"github.com/cshwen/gzong"
 	"github.com/cshwen/gzong/middleware"
 	"io"
 	"log"

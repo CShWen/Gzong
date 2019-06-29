@@ -7,6 +7,7 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
+	"time"
 )
 
 const contentType = "Content-Type"
@@ -95,7 +96,10 @@ func TestRouter_AddMiddleware(t *testing.T) {
 func TestRouter_GET(t *testing.T) {
 	gz := New()
 	gz.GET("/test", testGet)
-	gz.Run(":9871")
+	go func() {
+		gz.Run(":9871")
+		time.Sleep(time.Second)
+	}()
 
 	resp, _ := http.Get("http://127.0.0.1:9871/test")
 	if resp.StatusCode != http.StatusOK {
@@ -178,7 +182,10 @@ func TestRouter_ServeHTTP(t *testing.T) {
 func TestRouter_Run(t *testing.T) {
 	gz := New()
 	gz.GET("/test", testGet)
-	gz.Run(":9872")
+	go func() {
+		gz.Run(":9872")
+		time.Sleep(time.Second)
+	}()
 
 	resp, _ := http.Get("http://127.0.0.1:9872/test")
 	if resp.StatusCode != http.StatusOK {
