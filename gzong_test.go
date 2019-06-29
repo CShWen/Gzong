@@ -7,7 +7,6 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
-	"time"
 )
 
 const contentType = "Content-Type"
@@ -158,6 +157,7 @@ func TestRouter_ServeHTTP(t *testing.T) {
 	}
 }
 
+/*
 func TestRouter_Run(t *testing.T) {
 	gz := New()
 	gz.GET("/test", testGet)
@@ -178,7 +178,7 @@ func TestRouter_Run(t *testing.T) {
 	}
 }
 
-/*func TestRouter_GET(t *testing.T) {
+func TestRouter_GET(t *testing.T) {
 	gz := New()
 	gz.GET("/test", testGet)
 	go func() {
@@ -202,4 +202,5 @@ func TestRouter_Run(t *testing.T) {
 	if resp.StatusCode != http.StatusNotFound {
 		t.Error("GET请求不存在的地址应404")
 	}
-}*/
+}
+*/
