@@ -138,7 +138,7 @@ func (uc UserCenter) UpdateUserFunc(w http.ResponseWriter, req *http.Request) {
 	res, err := collection.UpdateOne(ctx, filterUserBson, bson.M{"$set": updateUser})
 
 	if err == nil {
-		fmt.Fprintf(w, "update user success. %s \n", res)
+		fmt.Fprintf(w, "update user success. %d \n", res.UpsertedID)
 	} else {
 		fmt.Fprintf(w, "update user failed. %s \n", err)
 	}
