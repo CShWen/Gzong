@@ -178,7 +178,7 @@ func TestRouter_RunAndGET(t *testing.T) {
 	if string(bodyBytes) != success {
 		t.Error("GET请求存在的地址，响应返回的body不符合预期")
 	}
-	resp, _ = http.Get("http://127.0.0.1:9872/error")
+	resp, _ = http.Get("http://127.0.0.1:9871/error")
 	if resp.StatusCode != http.StatusNotFound {
 		t.Error("GET请求不存在的地址应404")
 	}
