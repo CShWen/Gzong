@@ -181,7 +181,7 @@ func TestRouter_GET(t *testing.T) {
 	gz.GET("/test", testGet)
 	go func() {
 		gz.Run(":9871")
-		time.Sleep(time.Second)
+		time.Sleep(2 * time.Second)
 	}()
 
 	resp, _ := http.Get("http://127.0.0.1:9871/test")
