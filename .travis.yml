@@ -8,7 +8,5 @@ install:
   - go get -v golang.org/x/lint/golint
 
 script:
-  - ls
-  - pwd
   - go build
-  - go test gzong_test.go
+  - go test ./...
