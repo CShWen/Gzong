@@ -195,5 +195,4 @@ func TestRouter_Run(t *testing.T) {
 	if resp.StatusCode != http.StatusNotFound {
 		t.Error("GET请求不存在的地址应404")
 	}
-	go func() { defer gz.Close() }()
 }
