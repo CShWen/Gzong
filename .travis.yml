@@ -11,3 +11,6 @@ script:
   - go build
   - golint -set_exit_status ./...
   - go test -v -coverprofile=coverage.txt -covermode=set ./...
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
