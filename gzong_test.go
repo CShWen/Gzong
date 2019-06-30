@@ -208,7 +208,7 @@ func TestRouter_Run(t *testing.T) {
 
 	go func() {
 		gz.Run(strPort)
-		time.Sleep(1 * time.Second)
+		time.Sleep(5 * time.Second)
 		//defer gz.Close()
 	}()
 
@@ -238,7 +238,7 @@ func TestRouter_GET(t *testing.T) {
 	gz.GET("/test", testGet)
 	go func() {
 		gz.Run(strPort)
-		time.Sleep(1 * time.Second)
+		time.Sleep(5 * time.Second)
 		//defer gz.Close()
 	}()
 
