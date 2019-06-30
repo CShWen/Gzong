@@ -3,13 +3,13 @@ package gzong
 import (
 	"github.com/cshwen/gzong/middleware"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"net/http/httptest"
+	"strconv"
 	"strings"
 	"testing"
 	"time"
-	"strconv"
-	"log"
 )
 
 const contentType = "Content-Type"
@@ -209,9 +209,9 @@ func TestRouter_Run(t *testing.T) {
 	go func() {
 		gz.Run(strPort)
 		time.Sleep(3 * time.Second)
-		//defer gz.Close()
+		defer gz.Close()
 	}()
-	time.Sleep(1 * time.Second)
+	time.Sleep(233 * time.Millisecond)
 
 	resp, err := http.Get("http://localhost" + strPort + "/test")
 	t.Log("sstest resp:\t", resp)
@@ -240,9 +240,9 @@ func TestRouter_GET(t *testing.T) {
 	go func() {
 		gz.Run(strPort)
 		time.Sleep(3 * time.Second)
-		//defer gz.Close()
+		defer gz.Close()
 	}()
-	time.Sleep(1 * time.Second)
+	time.Sleep(233 * time.Millisecond)
 
 	resp, err := http.Get("http://127.0.0.1" + strPort + "/test")
 	if err != nil {
