@@ -56,7 +56,7 @@ $ go run gzong/example/easy.go
 $ curl localhost:8080/test
 ```
 
-Ps: 还有个已实现好的比较复杂示例gzong/example/complex.go可参照上述流程实操试验下。
+Ps: 还有个已实现好的比较复杂示例gzong/example/complex/complex.go可参照上述流程实操试验下。
 
 
 
