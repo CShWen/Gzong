@@ -207,12 +207,13 @@ func TestRouter_Run(t *testing.T) {
 	gz.GET("/test", testGet)
 
 	go func() {
-		gz.Run(":9872")
+		gz.Run(strPort)
 		time.Sleep(1 * time.Second)
 		//defer gz.Close()
 	}()
 
 	resp, err := http.Get("http://127.0.0.1" + strPort + "/test")
+	t.Log("sstest resp:\t", resp)
 	if err != err {
 		t.Log(err)
 	}
