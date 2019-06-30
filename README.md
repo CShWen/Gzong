@@ -43,7 +43,7 @@ func testFunc(w http.ResponseWriter, _ *http.Request) {
 
 ```sh
 # 编译
-$ go build gzong
+$ go build
 ```
 
 ```sh

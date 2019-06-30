@@ -7,7 +7,7 @@
 docker run -p 27017:27017 -v /tmp/db:/data/db -d mongo
 
 # 启动服务
-$ go build gzong
+$ go build
 $ go run gzong/demo/demo.go
 
 # 创建新用户
