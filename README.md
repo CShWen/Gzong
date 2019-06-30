@@ -7,11 +7,39 @@
 [![Codecov](https://img.shields.io/codecov/c/github/cshwen/gzong.svg)](https://codecov.io/gh/cshwen/gzong)
 [![License](http://img.shields.io/badge/license-mit-blue.svg)](https://raw.githubusercontent.com/cshwen/gzong/master/LICENSE)
 
-一个以Go为基础的简单web框架，简单实现了支持增删查改的用户中心demo（MongoDB）。
+
+## Installation
+一个以Go为基础的简单web框架，支持中间件插入，已有3个简单的中间件可集成（basicAuth、logging、session），部分完成单元测试。
+
+demo中简单实现了支持增删查改的用户中心(docker+MongoDB)仅供参考。
 
 
 
-## Examples
+## Usage
+
+试着写一个hello world，可参照gzong/example/easy.go
+
+```go
+package main
+
+import (
+	"fmt"
+	"github.com/cshwen/gzong"
+	"net/http"
+)
+
+func main() {
+	gz := gzong.New()
+	gz.GET("/test", testFunc)
+	gz.Run(":8080")
+}
+
+func testFunc(w http.ResponseWriter, _ *http.Request) {
+	fmt.Fprintln(w, "hello gzong.")
+}
+```
+
+然后写完记得先编译下（go build）再启动服务(go run)
 
 ```sh
 # 编译
@@ -20,7 +48,7 @@ $ go build gzong
 
 ```sh
 # 启动服务
-$ go run gzong/example/hello.go
+$ go run gzong/example/easy.go
 ```
 
 ```sh
@@ -28,28 +56,7 @@ $ go run gzong/example/hello.go
 $ curl localhost:8080/test
 ```
 
-
-
-## 用户中心demo
-
-简单实现了支持增删查改的用户中心demo，数据库实例为docker上的MongoDB镜像。
-
-```sh
-# 运行环境 docker+MongoDB镜像
-docker run -p 27017:27017 -v /tmp/db:/data/db -d mongo
-# 启动服务
-$ go build gzong
-$ go run gzong/demo/demo.go
-# 创建新用户
-$ curl localhost:8080/addUser -X POST -d 'nick=tnick&password=tpwd&name=tname&email=tt@gmail.com&phone=13712345678'
-# 修改用户信息
-$ curl localhost:8080/updateUser -X POST -d 'nick=tnick&password=tpwd&name=tname&email=tt@gmail.com&phone=13712345678'
-# 查询用户
-$ curl localhost:8080/queryUser -X POST -d 'nick=tnick&name=tname'
-# 删除用户
-$ curl localhost:8080/delUser -X POST -d 'nick=tnick&name=tname'
-
-```
+Ps: 还有个已实现好的比较复杂示例gzong/example/complex.go可参照上述流程实操试验下。
 
 
 

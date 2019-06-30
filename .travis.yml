@@ -2,6 +2,7 @@ language: go
 
 go:
   - "1.12.6"
+  - tip
 
 install:
   - go get -v go.mongodb.org/mongo-driver/mongo
