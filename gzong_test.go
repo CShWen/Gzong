@@ -214,7 +214,6 @@ func TestRouter_Run(t *testing.T) {
 	time.Sleep(233 * time.Millisecond)
 
 	resp, err := http.Get("http://localhost" + strPort + "/test")
-	t.Log("sstest resp:\t", resp)
 	if err != nil {
 		t.Log(err)
 	}
