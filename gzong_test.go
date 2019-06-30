@@ -208,11 +208,12 @@ func TestRouter_Run(t *testing.T) {
 
 	go func() {
 		gz.Run(strPort)
-		time.Sleep(5 * time.Second)
+		time.Sleep(3 * time.Second)
 		//defer gz.Close()
 	}()
+	time.Sleep(1 * time.Second)
 
-	resp, err := http.Get("http://127.0.0.1" + strPort + "/test")
+	resp, err := http.Get("http://localhost" + strPort + "/test")
 	t.Log("sstest resp:\t", resp)
 	if err != nil {
 		t.Log(err)
@@ -221,7 +222,7 @@ func TestRouter_Run(t *testing.T) {
 		t.Error("GET请求存在的地址访问异常")
 	}
 
-	resp, err = http.Get("http://127.0.0.1" + strPort + "/error")
+	resp, err = http.Get("http://localhost" + strPort + "/error")
 	if err != nil {
 		t.Log(err)
 	}
@@ -238,9 +239,10 @@ func TestRouter_GET(t *testing.T) {
 	gz.GET("/test", testGet)
 	go func() {
 		gz.Run(strPort)
-		time.Sleep(5 * time.Second)
+		time.Sleep(3 * time.Second)
 		//defer gz.Close()
 	}()
+	time.Sleep(1 * time.Second)
 
 	resp, err := http.Get("http://127.0.0.1" + strPort + "/test")
 	if err != nil {
