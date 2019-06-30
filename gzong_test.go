@@ -7,6 +7,9 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
+	"time"
+	"strconv"
+	"log"
 )
 
 const contentType = "Content-Type"
@@ -23,7 +26,10 @@ func TestNew(t *testing.T) {
 }
 
 func testPost(w http.ResponseWriter, r *http.Request) {
-	bodyBytes, _ := ioutil.ReadAll(r.Body)
+	bodyBytes, err := ioutil.ReadAll(r.Body)
+	if err != err {
+		log.Println(err)
+	}
 	w.Header().Set(contentType, contentTypeApplicationJSON)
 	w.WriteHeader(http.StatusOK)
 	w.Write(bodyBytes)
@@ -64,7 +70,10 @@ func TestRouter_AddMiddleware(t *testing.T) {
 	}))
 	defer tsOk.Close()
 
-	resp, _ := http.Get(tsOk.URL + "/test")
+	resp, err := http.Get(tsOk.URL + "/test")
+	if err != err {
+		t.Log(err)
+	}
 	if resp.StatusCode != http.StatusOK {
 		t.Error("GET请求存在的地址，响应返回的状态码不符合预期")
 	}
@@ -78,14 +87,23 @@ func TestRouter_AddMiddleware(t *testing.T) {
 	}))
 	defer tsUn.Close()
 
-	resp, _ = http.Get(tsUn.URL + "/test")
+	resp, err = http.Get(tsUn.URL + "/test")
+	if err != err {
+		t.Log(err)
+	}
 	if resp.StatusCode != http.StatusUnauthorized {
 		t.Error("请求添加了中间件basicAuth的服务，未携带认证信息应不通过")
 	}
 
-	req, _ := http.NewRequest("GET", tsUn.URL+"/test", nil)
+	req, err := http.NewRequest("GET", tsUn.URL+"/test", nil)
+	if err != err {
+		t.Log(err)
+	}
 	req.Header.Add("Authorization", "Basic "+middleware.Base64Encode(name, pwd))
-	resp, _ = http.DefaultClient.Do(req)
+	resp, err = http.DefaultClient.Do(req)
+	if err != err {
+		t.Log(err)
+	}
 
 	if resp.StatusCode != http.StatusOK {
 		t.Error("请求添加了中间件basicAuth的服务，携带认证信息应顺利通过")
@@ -100,8 +118,14 @@ func TestRouter_POST(t *testing.T) {
 	}))
 	defer ts.Close()
 
-	resp, _ := http.Post(ts.URL+"/test", contentTypeApplicationJSON, strings.NewReader(postBody))
-	bodyBytes, _ := ioutil.ReadAll(resp.Body)
+	resp, err := http.Post(ts.URL+"/test", contentTypeApplicationJSON, strings.NewReader(postBody))
+	if err != err {
+		t.Log(err)
+	}
+	bodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != err {
+		t.Log(err)
+	}
 
 	if resp.StatusCode != http.StatusOK {
 		t.Error("POST请求存在的地址，响应返回的状态码不符合预期")
@@ -122,9 +146,18 @@ func TestRouter_PUT(t *testing.T) {
 	}))
 	defer ts.Close()
 
-	req, _ := http.NewRequest("PUT", ts.URL+"/test", strings.NewReader(postBody))
-	resp, _ := http.DefaultClient.Do(req)
-	bodyBytes, _ := ioutil.ReadAll(resp.Body)
+	req, err := http.NewRequest("PUT", ts.URL+"/test", strings.NewReader(postBody))
+	if err != err {
+		t.Log(err)
+	}
+	resp, err := http.DefaultClient.Do(req)
+	if err != err {
+		t.Log(err)
+	}
+	bodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != err {
+		t.Log(err)
+	}
 
 	if resp.StatusCode != http.StatusOK {
 		t.Error("PUT请求存在的地址，响应返回的状态码不符合预期")
@@ -145,62 +178,95 @@ func TestRouter_ServeHTTP(t *testing.T) {
 	}))
 	defer ts.Close()
 
-	resp, _ := http.Get(ts.URL + "/test")
-	bodyBytes, _ := ioutil.ReadAll(resp.Body)
+	resp, err := http.Get(ts.URL + "/test")
+	if err != err {
+		t.Log(err)
+	}
+	bodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != err {
+		t.Log(err)
+	}
 	if resp.StatusCode != http.StatusOK || string(bodyBytes) != success {
 		t.Error("GET请求存在的地址访问异常")
 	}
 
-	resp, _ = http.Get(ts.URL + "/error")
+	resp, err = http.Get(ts.URL + "/error")
+	if err != err {
+		t.Log(err)
+	}
 	if resp.StatusCode != http.StatusNotFound {
 		t.Error("GET请求不存在的地址应404")
 	}
 }
 
-/*
 func TestRouter_Run(t *testing.T) {
+	port := 9872
+	strPort := ":" + strconv.Itoa(port)
+
 	gz := New()
 	gz.GET("/test", testGet)
 
 	go func() {
 		gz.Run(":9872")
 		time.Sleep(1 * time.Second)
-		defer gz.Close()
+		//defer gz.Close()
 	}()
 
-	resp, _ := http.Get("http://127.0.0.1:9872/test")
+	resp, err := http.Get("http://127.0.0.1" + strPort + "/test")
+	if err != err {
+		t.Log(err)
+	}
 	if resp.StatusCode != http.StatusOK {
 		t.Error("GET请求存在的地址访问异常")
 	}
-	resp, _ = http.Get("http://127.0.0.1:9872/error")
+
+	resp, err = http.Get("http://127.0.0.1" + strPort + "/error")
+	if err != err {
+		t.Log(err)
+	}
 	if resp.StatusCode != http.StatusNotFound {
 		t.Error("GET请求不存在的地址应404")
 	}
 }
 
 func TestRouter_GET(t *testing.T) {
+	port := 9871
+	strPort := ":" + strconv.Itoa(port)
+
 	gz := New()
 	gz.GET("/test", testGet)
 	go func() {
-		gz.Run(":9871")
+		gz.Run(strPort)
 		time.Sleep(1 * time.Second)
-		defer gz.Close()
+		//defer gz.Close()
 	}()
 
-	resp, _ := http.Get("http://127.0.0.1:9871/test")
+	resp, err := http.Get("http://127.0.0.1" + strPort + "/test")
+	if err != err {
+		t.Log(err)
+	}
+
 	if resp.StatusCode != http.StatusOK {
 		t.Error("GET请求存在的地址，响应返回的状态码不符合预期")
 	}
+
 	if resp.Header.Get(contentType) != contentTypeTextHTML {
 		t.Error("GET请求存在的地址，响应返回的header不符合预期")
 	}
-	bodyBytes, _ := ioutil.ReadAll(resp.Body)
+
+	bodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != err {
+		t.Log(err)
+	}
 	if string(bodyBytes) != success {
 		t.Error("GET请求存在的地址，响应返回的body不符合预期")
 	}
-	resp, _ = http.Get("http://127.0.0.1:9872/error")
+
+	resp, err = http.Get("http://127.0.0.1" + strPort + "/error")
+	if err != err {
+		t.Log(err)
+	}
 	if resp.StatusCode != http.StatusNotFound {
 		t.Error("GET请求不存在的地址应404")
 	}
 }
-*/
