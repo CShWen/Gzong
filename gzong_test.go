@@ -27,7 +27,7 @@ func TestNew(t *testing.T) {
 
 func testPost(w http.ResponseWriter, r *http.Request) {
 	bodyBytes, err := ioutil.ReadAll(r.Body)
-	if err != err {
+	if err != nil {
 		log.Println(err)
 	}
 	w.Header().Set(contentType, contentTypeApplicationJSON)
@@ -71,7 +71,7 @@ func TestRouter_AddMiddleware(t *testing.T) {
 	defer tsOk.Close()
 
 	resp, err := http.Get(tsOk.URL + "/test")
-	if err != err {
+	if err != nil {
 		t.Log(err)
 	}
 	if resp.StatusCode != http.StatusOK {
@@ -88,7 +88,7 @@ func TestRouter_AddMiddleware(t *testing.T) {
 	defer tsUn.Close()
 
 	resp, err = http.Get(tsUn.URL + "/test")
-	if err != err {
+	if err != nil {
 		t.Log(err)
 	}
 	if resp.StatusCode != http.StatusUnauthorized {
@@ -96,12 +96,12 @@ func TestRouter_AddMiddleware(t *testing.T) {
 	}
 
 	req, err := http.NewRequest("GET", tsUn.URL+"/test", nil)
-	if err != err {
+	if err != nil {
 		t.Log(err)
 	}
 	req.Header.Add("Authorization", "Basic "+middleware.Base64Encode(name, pwd))
 	resp, err = http.DefaultClient.Do(req)
-	if err != err {
+	if err != nil {
 		t.Log(err)
 	}
 
@@ -119,11 +119,11 @@ func TestRouter_POST(t *testing.T) {
 	defer ts.Close()
 
 	resp, err := http.Post(ts.URL+"/test", contentTypeApplicationJSON, strings.NewReader(postBody))
-	if err != err {
+	if err != nil {
 		t.Log(err)
 	}
 	bodyBytes, err := ioutil.ReadAll(resp.Body)
-	if err != err {
+	if err != nil {
 		t.Log(err)
 	}
 
@@ -147,15 +147,15 @@ func TestRouter_PUT(t *testing.T) {
 	defer ts.Close()
 
 	req, err := http.NewRequest("PUT", ts.URL+"/test", strings.NewReader(postBody))
-	if err != err {
+	if err != nil {
 		t.Log(err)
 	}
 	resp, err := http.DefaultClient.Do(req)
-	if err != err {
+	if err != nil {
 		t.Log(err)
 	}
 	bodyBytes, err := ioutil.ReadAll(resp.Body)
-	if err != err {
+	if err != nil {
 		t.Log(err)
 	}
 
@@ -179,11 +179,11 @@ func TestRouter_ServeHTTP(t *testing.T) {
 	defer ts.Close()
 
 	resp, err := http.Get(ts.URL + "/test")
-	if err != err {
+	if err != nil {
 		t.Log(err)
 	}
 	bodyBytes, err := ioutil.ReadAll(resp.Body)
-	if err != err {
+	if err != nil {
 		t.Log(err)
 	}
 	if resp.StatusCode != http.StatusOK || string(bodyBytes) != success {
@@ -191,7 +191,7 @@ func TestRouter_ServeHTTP(t *testing.T) {
 	}
 
 	resp, err = http.Get(ts.URL + "/error")
-	if err != err {
+	if err != nil {
 		t.Log(err)
 	}
 	if resp.StatusCode != http.StatusNotFound {
@@ -214,7 +214,7 @@ func TestRouter_Run(t *testing.T) {
 
 	resp, err := http.Get("http://127.0.0.1" + strPort + "/test")
 	t.Log("sstest resp:\t", resp)
-	if err != err {
+	if err != nil {
 		t.Log(err)
 	}
 	if resp.StatusCode != http.StatusOK {
@@ -222,7 +222,7 @@ func TestRouter_Run(t *testing.T) {
 	}
 
 	resp, err = http.Get("http://127.0.0.1" + strPort + "/error")
-	if err != err {
+	if err != nil {
 		t.Log(err)
 	}
 	if resp.StatusCode != http.StatusNotFound {
@@ -243,7 +243,7 @@ func TestRouter_GET(t *testing.T) {
 	}()
 
 	resp, err := http.Get("http://127.0.0.1" + strPort + "/test")
-	if err != err {
+	if err != nil {
 		t.Log(err)
 	}
 
@@ -256,7 +256,7 @@ func TestRouter_GET(t *testing.T) {
 	}
 
 	bodyBytes, err := ioutil.ReadAll(resp.Body)
-	if err != err {
+	if err != nil {
 		t.Log(err)
 	}
 	if string(bodyBytes) != success {
@@ -264,7 +264,7 @@ func TestRouter_GET(t *testing.T) {
 	}
 
 	resp, err = http.Get("http://127.0.0.1" + strPort + "/error")
-	if err != err {
+	if err != nil {
 		t.Log(err)
 	}
 	if resp.StatusCode != http.StatusNotFound {
